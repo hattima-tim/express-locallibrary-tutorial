@@ -3,11 +3,23 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+require("dotenv").config();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const Author = require("./models/author");
+const Book = require("./models/book");
+const Genre = require('./models/genre')
+const mongoose = require("mongoose");
 
 const app = express();
+const mongodb =
+  `mongodb+srv://${process.env.username}:${process.env.password}@cluster0.zytjvd3.mongodb.net/?retryWrites=true&w=majority`;
+
+async function main() {
+  await mongoose.connect(mongodb);
+}
+main().catch((err) => console.log(err));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
