@@ -12,7 +12,7 @@ block content
         else if val.status=='Maintenance'
           span.text-danger #{val.status}
         else
-          span.text-warning #{val2.status}
+          span.text-warning #{val.status}
         if val.status!='Available'
           span  (Due: #{val.due_back_formatted} )
 
