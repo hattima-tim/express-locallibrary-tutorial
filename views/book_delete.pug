@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1 #{title}: #{book.name}
+
+  if copies.length
+
+    p #[strong Delete the following books before attempting to delete this author.]
+
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 Copies
+      
+      ul
+      each copy in copies
+        li
+          a(href=copy.url) #{copy.book.title} -
+          if copy.status=='Available'
+           span.text-success #{copy.status}
+          else if copy.status=='Maintenance'
+           span.text-danger #{copy.status}
+          else
+           span.text-warning #{copy.status}
+
+  else
+    p Do you really want to delete this Author?
+
+    form(method='POST' action='')
+      div.form-group
+        input#authorid.form-control(type='hidden',name='bookid', required='true', value=book._id )
+
+      button.btn.btn-primary(type='submit') Delete
