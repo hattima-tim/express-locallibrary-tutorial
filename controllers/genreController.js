@@ -37,18 +37,17 @@ exports.genre_create_get = (req, res, next) => {
 
 // Handle Genre create on POST.
 exports.genre_create_post = [
-  body('name','Genre must be atleast 3 characters long')
-  .trim()
-  .isLength({min:3})
-  .escape(),
+  body("name", "Genre must be atleast 3 characters long")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
 
-  asyncHandler(async (req,res,next)=>{
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const genre = new Genre({name:req.body.name});
+    const genre = new Genre({ name: req.body.name });
 
     if (!errors.isEmpty()) {
-      console.log(errors)
       res.render("genre_form", {
         title: "Create Genre",
         genre: genre,
@@ -57,25 +56,35 @@ exports.genre_create_post = [
     } else {
       const genreExists = await Genre.findOne({ name: req.body.name });
 
-      if(genreExists){
+      if (genreExists) {
         res.redirect(genreExists.url);
-      }else{
+      } else {
         await genre.save();
 
         res.redirect(genre.url);
       }
     }
-  })
+  }),
 ];
 
 // Display Genre delete form on GET.
 exports.genre_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre delete GET");
+  const [genre, allBooks] = await Promise.all([
+    Genre.findById(req.params.id).orFail(new Error("Genre not found")),
+    Book.find({ genre: req.params.id }, "title summary"),
+  ]);
+
+  res.render('genre_delete',{
+    title:'Delete Genre',
+    genre:genre,
+    books:allBooks
+  })
 });
 
 // Handle Genre delete on POST.
 exports.genre_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre delete POST");
+  await Genre.findByIdAndRemove(req.body.genreid);
+  res.redirect('/catalog/genres')
 });
 
 // Display Genre update form on GET.
