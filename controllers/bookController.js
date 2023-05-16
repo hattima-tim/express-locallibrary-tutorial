@@ -163,7 +163,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
 
 // Handle book delete on POST.
 exports.book_delete_post = asyncHandler(async (req, res, next) => {
-  await Book.findByIdAndRemove(req.params.id);
+  await Book.findByIdAndRemove(req.body.bookid);
   res.redirect('/catalog/books')
 });
 
