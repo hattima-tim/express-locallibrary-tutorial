@@ -63,13 +63,22 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
 // Display book create form on GET.
 exports.book_create_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book create GET");
+  const [allAuthors, allGenres] = await Promise.all([
+    Author.find(),
+    Genre.find(),
+  ]);
+
+  res.render("book_form", {
+    title: "Create Book",
+    authors: allAuthors,
+    genres: allGenres,
+  });
 });
 
 // Handle book create on POST.
 exports.book_create_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Book create POST");
-});
+    });
 
 // Display book delete form on GET.
 exports.book_delete_get = asyncHandler(async (req, res, next) => {
@@ -89,4 +98,4 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
 // Handle book update on POST.
 exports.book_update_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Book update POST");
-});
+      });
