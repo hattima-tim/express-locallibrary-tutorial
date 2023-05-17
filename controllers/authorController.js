@@ -176,7 +176,7 @@ exports.author_update_post = [
     } else {
       await Author.findByIdAndUpdate(req.params.id, author);
 
-      res.redirect(author.url);
+      res.redirect('/catalog/authors');
     }
   }),
 ];
