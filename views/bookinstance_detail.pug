@@ -20,4 +20,7 @@ block content
     p #[strong Due back:] #{bookinstance.due_back_formatted}
 
   hr
-  a(href=bookinstance.url+'/delete') Delete
+  p
+    a(href=bookinstance.url+'/delete') Delete
+  p
+    a(href=bookinstance.url+'/update') Update
