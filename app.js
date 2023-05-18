@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const compression = require('compression');
+const RateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const indexRouter = require("./routes/index");
@@ -27,6 +28,13 @@ main().catch((err) => console.log(err));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+// Set up rate limiter: maximum of twenty requests per minute
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+// Apply rate limiter to all requests
+app.use(limiter);
 // Set CSP headers to allow Bootstrap and Jquery to be served
 app.use(
   helmet.contentSecurityPolicy({
