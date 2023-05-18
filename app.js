@@ -27,6 +27,14 @@ main().catch((err) => console.log(err));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+// Set CSP headers to allow Bootstrap and Jquery to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
 app.use(compression()); // Compress all routes
 app.use(logger("dev"));
 app.use(express.json());
